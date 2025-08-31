@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>ShopEasy</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <h1>SHOPEASY</h1>
+    <div id="cart">Cart: 0 items</div>
+  </header>
+
+  <nav>
+    <button onclick="filterCategory('All')">All</button>
+    <button onclick="filterCategory('FashionHub')">Fashion</button>
+    <button onclick="filterCategory('Electronics')">Electronics</button>
+    <button onclick="filterCategory('Grocery')">Grocery</button>
+  </nav>
+
+  <main id="store"></main>
+
+  <section id="checkout" style="display:none;"></section>
+
+  <script src="script.js"></script>
+</body>
+</html>
