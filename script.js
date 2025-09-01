@@ -5,7 +5,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const checkoutSection = document.getElementById('checkout');
   const searchInput = document.getElementById('search'); 
   const searchBtn = document.getElementById('searchBtn');
-  const searchContainer = document.querySelector(".search-row"); // select search by class
   let cart = [];
 
   // Products
@@ -50,7 +49,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // Display products (grid)
   function displayProducts(list){
     main.innerHTML = "";
-    main.style.display = "grid"; // ensures grid layout
+    main.style.display = "grid";
     list.forEach((product, index) => {
       const productDiv = document.createElement("div");
       productDiv.className = "product";
@@ -111,7 +110,7 @@ document.addEventListener('DOMContentLoaded', () => {
       return;
     }
     let html = `<h3>Cart (${cart.length} items)</h3><ul>`;
-    cart.forEach((item, i) => {
+    cart.forEach((item,i) => {
       html += `
         <li>
           ${item.name} - $${item.price} × ${item.qty}
@@ -127,6 +126,7 @@ document.addEventListener('DOMContentLoaded', () => {
   window.increaseQty = function(index){
     cart[index].qty++;
     updateCartDisplay();
+    renderCheckoutIfVisible();
   }
 
   window.decreaseQty = function(index){
@@ -136,64 +136,68 @@ document.addEventListener('DOMContentLoaded', () => {
       cart.splice(index, 1);
     }
     updateCartDisplay();
+    renderCheckoutIfVisible();
   }
 
   window.removeFromCart = function(index){
     cart.splice(index, 1);
     updateCartDisplay();
+    renderCheckoutIfVisible();
   }
 
-  window.checkout = function(){
-    // Hide store and search
-    storeSection.style.display = 'none';
-    if(searchContainer) searchContainer.style.display = "none";
+  // Helper to render checkout only if currently visible
+  function renderCheckoutIfVisible(){
+    if(checkoutSection.style.display === 'block'){
+      renderCheckout();
+    }
+  }
 
-    // Hide Top button
-    document.getElementById("topBtn").style.display = "none";
-
-    // Clear product grid to ensure nothing shows
-    main.innerHTML = "";
-
+  // --- Checkout ---
+  function renderCheckout() {
     const totalAmount = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
-
-    checkoutSection.style.display = 'block';
-    checkoutSection.innerHTML = `
+    let html = `
       <div class="checkout-container">
         <h1>🛒 Checkout</h1>
+        <ul>`;
+   html += `</ul>
+        <p>Total Amount: <strong>$${totalAmount}</strong></p>
         <form id="checkoutForm">
           <label>Name: <input type="text" required></label><br>
           <label>Email: <input type="email" required></label><br>
           <label>Address: <textarea required></textarea></label><br>
-          <p>Total Amount: <strong>$${totalAmount}</strong></p>
           <button type="submit" class="checkout-btn">Confirm Purchase</button>
         </form>
-      </div>
-    `;
+      </div>`;
+    checkoutSection.innerHTML = html;
 
-    document.getElementById('checkoutForm').addEventListener('submit', (e) => {
-      e.preventDefault();
-      checkoutSection.innerHTML = `
-        <div class="thankyou">
-          <h1>🎉 Thank You for Shopping with ShopEasy! 🎉</h1>
-          <p>Your order has been placed successfully.</p>
-          <button id="backToStore" class="checkout-btn">← Back to Store</button>
-        </div>
-      `;
-      cart = [];
-
-      document.getElementById('backToStore').addEventListener('click', () => {
-        checkoutSection.style.display = 'none';
-        storeSection.style.display = 'block';
-
-        // Show Top button again
-        document.getElementById("topBtn").style.display = "block";
-
-        // Show search bar again
-        if(searchContainer) searchContainer.style.display = "block";
-
-        displayProducts(products);
+    const checkoutForm = document.getElementById('checkoutForm');
+    if(checkoutForm){
+      checkoutForm.addEventListener('submit', (e)=>{
+        e.preventDefault();
+        checkoutSection.innerHTML = `
+          <div class="thankyou">
+            <h1>🎉 Thank You for Shopping with ShopEasy! 🎉</h1>
+            <p>Your order has been placed successfully.</p>
+            <button id="backToStore" class="checkout-btn">← Back to Store</button>
+          </div>`;
+        cart = [];
         updateCartDisplay();
+        document.getElementById('backToStore').addEventListener('click', ()=>{
+          checkoutSection.style.display = 'none';
+          storeSection.style.display = 'grid';
+          const searchRow = document.querySelector('.search-row');
+          if(searchRow) searchRow.style.display = 'block';
+          displayProducts(products);
+        });
       });
-    });
+    }
+  }
+
+  window.checkout = function() {
+    storeSection.style.display = 'none';
+    const searchRow = document.querySelector('.search-row');
+    if(searchRow) searchRow.style.display = 'none';
+    checkoutSection.style.display = 'block';
+    renderCheckout();
   }
 });
