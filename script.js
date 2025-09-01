@@ -1,4 +1,4 @@
-document.addEventListener('DOMContentLoaded', () => { 
+document.addEventListener('DOMContentLoaded', () => {  
   const main = document.getElementById("store");
   const cartDisplay = document.getElementById('cart');
   const storeSection = document.getElementById('store');
@@ -145,7 +145,6 @@ document.addEventListener('DOMContentLoaded', () => {
     renderCheckoutIfVisible();
   }
 
-  // Helper to render checkout only if currently visible
   function renderCheckoutIfVisible(){
     if(checkoutSection.style.display === 'block'){
       renderCheckout();
@@ -154,12 +153,29 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // --- Checkout ---
   function renderCheckout() {
+    checkoutSection.innerHTML = ""; // Clear old content
+
+    if(cart.length === 0){
+      checkoutSection.innerHTML = `
+        <div class="checkout-container">
+          <h1>🛒 Checkout</h1>
+          <p>Your cart is empty.</p>
+          <button id="backToStore" class="checkout-btn">← Back to Store</button>
+        </div>`;
+      document.getElementById('backToStore').addEventListener('click', ()=>{
+        checkoutSection.style.display = 'none';
+        storeSection.style.display = 'grid';
+        const searchRow = document.querySelector('.search-row');
+        if(searchRow) searchRow.style.display = 'block';
+        displayProducts(products);
+      });
+      return;
+    }
+
     const totalAmount = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
-    let html = `
+    checkoutSection.innerHTML = `
       <div class="checkout-container">
         <h1>🛒 Checkout</h1>
-        <ul>`;
-   html += `</ul>
         <p>Total Amount: <strong>$${totalAmount}</strong></p>
         <form id="checkoutForm">
           <label>Name: <input type="text" required></label><br>
@@ -167,8 +183,8 @@ document.addEventListener('DOMContentLoaded', () => {
           <label>Address: <textarea required></textarea></label><br>
           <button type="submit" class="checkout-btn">Confirm Purchase</button>
         </form>
-      </div>`;
-    checkoutSection.innerHTML = html;
+      </div>
+    `;
 
     const checkoutForm = document.getElementById('checkoutForm');
     if(checkoutForm){
