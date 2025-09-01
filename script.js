@@ -5,6 +5,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const checkoutSection = document.getElementById('checkout');
   const searchInput = document.getElementById('search'); 
   const searchBtn = document.getElementById('searchBtn');
+  const topBtn = document.getElementById("topBtn");
   let cart = [];
 
   // Products
@@ -46,7 +47,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Display products (grid)
+  // Display products
   function displayProducts(list){
     main.innerHTML = "";
     main.style.display = "grid";
@@ -89,7 +90,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Add to cart with quantity
+  // Add to cart
   main.addEventListener('click', (e) => {
     if(e.target.tagName === 'BUTTON'){
       const index = e.target.dataset.index;
@@ -153,8 +154,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // --- Checkout ---
   function renderCheckout() {
-    checkoutSection.innerHTML = ""; // Clear old content
-
     if(cart.length === 0){
       checkoutSection.innerHTML = `
         <div class="checkout-container">
@@ -168,14 +167,18 @@ document.addEventListener('DOMContentLoaded', () => {
         const searchRow = document.querySelector('.search-row');
         if(searchRow) searchRow.style.display = 'block';
         displayProducts(products);
+        topBtn.style.display = 'block';
       });
       return;
     }
 
-    const totalAmount = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
-    checkoutSection.innerHTML = `
+    const totalAmount = cart.reduce((sum,item)=>sum + (item.price*item.qty),0);
+
+    let html = `
       <div class="checkout-container">
         <h1>🛒 Checkout</h1>
+        <ul>`; // item list in cart on top right
+    html += `</ul>
         <p>Total Amount: <strong>$${totalAmount}</strong></p>
         <form id="checkoutForm">
           <label>Name: <input type="text" required></label><br>
@@ -183,8 +186,10 @@ document.addEventListener('DOMContentLoaded', () => {
           <label>Address: <textarea required></textarea></label><br>
           <button type="submit" class="checkout-btn">Confirm Purchase</button>
         </form>
-      </div>
-    `;
+        <button id="backToStore" class="checkout-btn">← Back to Store</button>
+      </div>`;
+
+    checkoutSection.innerHTML = html;
 
     const checkoutForm = document.getElementById('checkoutForm');
     if(checkoutForm){
@@ -204,7 +209,21 @@ document.addEventListener('DOMContentLoaded', () => {
           const searchRow = document.querySelector('.search-row');
           if(searchRow) searchRow.style.display = 'block';
           displayProducts(products);
+          topBtn.style.display = 'block';
         });
+      });
+    }
+
+    // Back to store button listener
+    const backBtn = document.getElementById('backToStore');
+    if(backBtn){
+      backBtn.addEventListener('click', ()=>{
+        checkoutSection.style.display = 'none';
+        storeSection.style.display = 'grid';
+        const searchRow = document.querySelector('.search-row');
+        if(searchRow) searchRow.style.display = 'block';
+        displayProducts(products);
+        topBtn.style.display = 'block';
       });
     }
   }
