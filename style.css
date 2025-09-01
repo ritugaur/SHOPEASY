@@ -2,15 +2,19 @@
 body {
   font-family: Arial, sans-serif;
   margin: 0;
-  background: #f9f9f9;
+  /* Panda-themed colorful gradient background */
+  background: linear-gradient(135deg, #fceabb, #f8b500, #f0f8ff, #ffe4e1);
+  min-height: 100vh;
 }
 
+/* Header */
 header {
-  background: #4CAF50;
+  background: rgba(76, 175, 80, 0.85);
   color: white;
   padding: 15px;
   text-align: center;
   position: relative;
+  border-bottom: 3px solid #fff;
 }
 
 #cart {
@@ -24,6 +28,7 @@ header {
   font-weight: bold;
 }
 
+/* Navigation */
 nav {
   text-align: center;
   margin: 15px 0;
@@ -37,23 +42,24 @@ nav button {
   color: white;
   cursor: pointer;
   transition: 0.3s;
+  border-radius: 6px;
 }
 nav button:hover {
   background: #4CAF50;
 }
 
 /* Search bar */
-#searchBar {
+.search-row {
   text-align: center;
   margin: 10px;
 }
-#searchBar input {
+.search-row input {
   padding: 10px;
   width: 40%;
   border: 1px solid #ccc;
   border-radius: 5px;
 }
-#searchBar button {
+.search-row button {
   padding: 10px 15px;
   margin-left: 5px;
   background: #4CAF50;
@@ -61,7 +67,7 @@ nav button:hover {
   border: none;
   cursor: pointer;
 }
-#searchBar button:hover {
+.search-row button:hover {
   background: #45a049;
 }
 
@@ -74,15 +80,16 @@ nav button:hover {
 }
 
 .product {
-  background: white;
+  background: rgba(255, 255, 255, 0.9);
   padding: 15px;
   text-align: center;
   border-radius: 12px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
-  transition: transform 0.2s ease-in-out;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
 }
 .product:hover {
   transform: scale(1.05);
+  box-shadow: 0 4px 15px rgba(0,0,0,0.4);
 }
 .product button {
   margin-top: 10px;
@@ -101,7 +108,13 @@ nav button:hover {
 .checkout-container {
   text-align: center;
   padding: 20px;
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 15px;
+  margin: 20px auto;
+  max-width: 500px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.3);
 }
+
 .checkout-btn {
   padding: 12px 20px;
   background: #FF5722;
@@ -115,10 +128,13 @@ nav button:hover {
 .checkout-btn:hover {
   background: #E64A19;
 }
+
 .total-amount {
   font-size: 18px;
   color: #333;
 }
+
+/* Top button */
 .top-btn {
   position: fixed;
   bottom: 20px;
@@ -134,14 +150,13 @@ nav button:hover {
   z-index: 1000;
   transition: background 0.3s;
 }
-
 .top-btn:hover {
   background: #e65c00;
 }
 
 /* Responsive */
 @media (max-width: 768px) {
-  #searchBar input {
+  .search-row input {
     width: 70%;
   }
 }
