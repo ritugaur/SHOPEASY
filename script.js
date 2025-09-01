@@ -145,7 +145,13 @@ document.addEventListener('DOMContentLoaded', () => {
   window.checkout = function(){
     storeSection.style.display = 'none';
     checkoutSection.style.display = 'block';
-    document.getElementById("topBtn").style.display = "none"; // hide Top button
+
+    // Hide Top button
+    document.getElementById("topBtn").style.display = "none";
+
+    // Hide search bar on checkout page
+    const searchContainer = document.getElementById("searchContainer");
+    if(searchContainer) searchContainer.style.display = "none";
 
     const totalAmount = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
 
@@ -172,10 +178,17 @@ document.addEventListener('DOMContentLoaded', () => {
         </div>
       `;
       cart = [];
+
       document.getElementById('backToStore').addEventListener('click', () => {
         checkoutSection.style.display = 'none';
         storeSection.style.display = 'block';
-        document.getElementById("topBtn").style.display = "block"; // show Top button again
+
+        // Show Top button again
+        document.getElementById("topBtn").style.display = "block";
+
+        // Show search bar again
+        if(searchContainer) searchContainer.style.display = "block";
+
         displayProducts(products);
         updateCartDisplay();
       });
