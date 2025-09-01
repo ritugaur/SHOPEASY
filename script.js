@@ -5,6 +5,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const checkoutSection = document.getElementById('checkout');
   const searchInput = document.getElementById('search'); 
   const searchBtn = document.getElementById('searchBtn');
+  const searchContainer = document.querySelector(".search-row"); // select search by class
   let cart = [];
 
   // Products
@@ -143,18 +144,19 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   window.checkout = function(){
+    // Hide store and search
     storeSection.style.display = 'none';
-    checkoutSection.style.display = 'block';
+    if(searchContainer) searchContainer.style.display = "none";
 
     // Hide Top button
     document.getElementById("topBtn").style.display = "none";
 
-    // Hide search bar on checkout page
-    const searchContainer = document.getElementById("searchContainer");
-    if(searchContainer) searchContainer.style.display = "none";
+    // Clear product grid to ensure nothing shows
+    main.innerHTML = "";
 
     const totalAmount = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
 
+    checkoutSection.style.display = 'block';
     checkoutSection.innerHTML = `
       <div class="checkout-container">
         <h1>🛒 Checkout</h1>
