@@ -1,4 +1,4 @@
-document.addEventListener('DOMContentLoaded', () => {  
+document.addEventListener('DOMContentLoaded', () => {   
   const main = document.getElementById("store");
   const cartDisplay = document.getElementById('cart');
   const storeSection = document.getElementById('store');
@@ -154,6 +154,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // --- Checkout ---
   function renderCheckout() {
+    // hide top button while on checkout page
+    topBtn.style.display = 'none';
+
     if(cart.length === 0){
       checkoutSection.innerHTML = `
         <div class="checkout-container">
@@ -177,8 +180,6 @@ document.addEventListener('DOMContentLoaded', () => {
     let html = `
       <div class="checkout-container">
         <h1>🛒 Checkout</h1>
-        <ul>`; // item list in cart on top right
-    html += `</ul>
         <p>Total Amount: <strong>$${totalAmount}</strong></p>
         <form id="checkoutForm">
           <label>Name: <input type="text" required></label><br>
